@@ -13,10 +13,15 @@ def load_model(path="model.pkl"):
     return None
 
 @st.cache_data
-def load_data(path="data/diabetes.csv"):
-    if os.path.exists(path):
-        return pd.read_csv(path)
-    return None
+def load_data():
+    import glob
+    files = glob.glob("data/*.csv")
+    if not files:
+        st.error(f"No CSV found in data/ folder. Current dir: {os.getcwd()}")
+        return None
+    st.info(f"Loading: {files[0]}")
+    return pd.read_csv(files[0])
+
 
 model = load_model("model.pkl")
 df = load_data("data/diabetes.csv")
